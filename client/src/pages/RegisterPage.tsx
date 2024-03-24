@@ -1,18 +1,24 @@
 import React, {useState} from 'react'
 
 const RegisterPage = () => {
-  const [userName, setUserName] = useState('');
+  const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
   const register = async (ev : React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
-    await fetch('http://localhost:8081/register',{
+    const response = await fetch('http://localhost:8081/register',{
       method: 'POST',
-      body: JSON.stringify({userName, password}),
+      body: JSON.stringify({username, password}),
       headers: {'Content-Type' : 'application/json'},
-
     });
+
+    if(response.status === 200){
+      alert('registration successful')
+    }
+    else{
+      alert('registration failed' + response.status);
+    }
   }
 
   return (
@@ -20,7 +26,7 @@ const RegisterPage = () => {
         <h1>Register</h1>
         <input  type="text" 
                 placeholder='username' 
-                value={userName} 
+                value={username} 
                 onChange={ev => setUserName(ev.target.value)} />
         <input  type="password"
                 placeholder='password' 
